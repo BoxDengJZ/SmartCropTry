@@ -140,23 +140,24 @@ class SketchController: UIViewController {
         let sizeOld = sketch.frame.size
         let originOld = sketch.frame.origin
         let center = sketch.center
-  
+        let bigS = img.size.size(in: measure.s)
+        let clockwize: Bool
         switch direction {
         case .lhs:
             
             // 逆时针
             
             angle -= 1
+            clockwize = false
             
             
-            sketch.defaultPoints.update(clockwize: false, by: sizeOld)
         case .rhs:
             
             // 顺时针
             
             angle += 1
+            clockwize = true
             
-            sketch.defaultPoints.update(clockwize: true, by: sizeOld)
             // 下一步，对 UI 的修改，影响上一步
             
         }
@@ -166,28 +167,37 @@ class SketchController: UIViewController {
         var ratio: CGFloat = 1
         
         let smallS = img.size.size(by: measure.horizontal)
-        let bigS = img.size.size(in: measure.s)
+        
         var imgTransform = CGAffineTransform(rotationAngle: ImgSingleAngle.time * angle)
         if Int(angle) % 2 == 1{
             ratio = smallS.width / bigS.height
             imgTransform = imgTransform.scaledBy(x: ratio, y: ratio)
             sketch.frame.size = smallS
+           
         }
         else{
             ratio = bigS.height / smallS.width
             sketch.frame.size = bigS
+            
         }
+     
+        if Int(angle) % 2 == 0{
+            print("1/ratio", 1/ratio)
+            sketch.defaultPoints.scale(r: ratio, forS: sizeOld)
+        }
+        sketch.defaultPoints.update(clockwize: clockwize, by: sizeOld)
         imgView.transform = imgTransform
-        print("ratio", ratio)
+        
        
         sketch.center = center
         let originNew = sketch.frame.origin
         
         sketch.defaultPoints.patch(vector: originNew - originOld)
         
-        
-        sketch.defaultPoints.scale(r: ratio, forS: sketch.frame.size)
-        
+        if Int(angle) % 2 == 1{
+            print("ratio", ratio)
+            sketch.defaultPoints.scale(r: ratio, forS: sizeOld)
+        }
         
         
         sketch.reloadData()

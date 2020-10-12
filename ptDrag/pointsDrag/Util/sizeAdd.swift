@@ -56,4 +56,9 @@ extension CGSize{
         return CGSize(width: width * rate, height: height * rate)
     }
     
+    
+    
+    var reverted: CGSize{
+        CGSize(width: height, height: width)
+    }
 }
