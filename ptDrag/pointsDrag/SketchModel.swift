@@ -95,6 +95,77 @@ struct SketchModel{
         }
         
     }
+    
+    
+    
+    
+    mutating
+    func update(clockwize beC: Bool, origin bySize: CGSize){
+        let lhsTop: CGPoint, rhsTop: CGPoint, rhsBottom: CGPoint, lhsBottom: CGPoint
+        let center = CGPoint(x: bySize.width / 2, y: bySize.height / 2 )
+        if beC{
+            lhsTop = clockwize(rightTurn: leftTop, aroundOrigin: center)
+               
+            rhsTop = clockwize(rightTurn: rightTop, aroundOrigin: center)
+                
+            rhsBottom = clockwize(rightTurn: rightBottom, aroundOrigin: center)
+                
+            lhsBottom = clockwize(rightTurn: leftBottom, aroundOrigin: center)
+        }
+        else{
+            lhsTop = antiClockwize(leftTurn: leftTop, aroundOrigin: center)
+            rhsTop = antiClockwize(leftTurn: rightTop, aroundOrigin: center)
+            rhsBottom = antiClockwize(leftTurn: rightBottom, aroundOrigin: center)
+            lhsBottom = antiClockwize(leftTurn: leftBottom, aroundOrigin: center)
+        }
+        leftTop = lhsTop
+        rightTop = rhsTop
+        
+        rightBottom = rhsBottom
+        leftBottom = lhsBottom
+        
+       
+    }
+    
+    
+    
+     mutating
+     func patch(vector pt: CGPoint){
+          
+          leftTop = leftTop - pt
+          rightTop = rightTop - pt
+           
+          rightBottom = rightBottom - pt
+          leftBottom = leftBottom - pt
+          
+          
+          
+      }
+      
+    
+      private
+      func clockwize(rightTurn target: CGPoint, aroundOrigin origin: CGPoint) -> CGPoint {
+          let dx = target.x - origin.x
+          let dy = target.y - origin.y
+          let radius = sqrt(dx * dx + dy * dy)
+          let azimuth = atan2(dy, dx) // in radians
+          let x = origin.x - radius * sin(azimuth)
+          let y = origin.y + radius * cos(azimuth)
+          return CGPoint(x: x, y: y)
+      }
+      
+      
+      private
+      func antiClockwize(leftTurn target: CGPoint, aroundOrigin origin: CGPoint) -> CGPoint {
+          let dx = target.x - origin.x
+          let dy = target.y - origin.y
+          let radius = sqrt(dx * dx + dy * dy)
+          let azimuth = atan2(dy, dx) // in radians
+         
+          let x = origin.x + radius * sin(azimuth)
+          let y = origin.y - radius * cos(azimuth)
+          return CGPoint(x: x, y: y)
+      }
   
 }
 
@@ -127,3 +198,7 @@ extension CGPoint{
     
     
 }
+
+
+
+

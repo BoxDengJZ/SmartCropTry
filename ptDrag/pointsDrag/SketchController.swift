@@ -22,11 +22,14 @@ struct ImgLayout {
     
     let s: CGSize
     
+    let screenH: CGFloat
+    
+    let screenW: CGFloat
     
     init() {
        
-        let screenH = UIScreen.main.bounds.height
-        let screenW = UIScreen.main.bounds.width
+        screenH = UIScreen.main.bounds.height
+        screenW = UIScreen.main.bounds.width
         
         h = screenH - 160
         
@@ -66,6 +69,13 @@ class SketchController: UIViewController {
     lazy var measure = ImgLayout()
     
     
+    lazy var lhsRotateB = DirectionRotateB(opt: .lhs)
+    
+    lazy var rhsRotateB = DirectionRotateB(opt: .rhs)
+    
+    
+    var angle: CGFloat = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -88,8 +98,71 @@ class SketchController: UIViewController {
         }
         
         
+        view.addSubview(lhsRotateB)
+        view.addSubview(rhsRotateB)
+        let sizeB = CGSize(width: 74, height: 32)
+        lhsRotateB.frame.size = sizeB
+        rhsRotateB.frame.size = sizeB
+        
+        lhsRotateB.center = CGPoint(x: 50, y: measure.screenH - sizeB.height - 20)
+        rhsRotateB.center = CGPoint(x: measure.screenW - sizeB.width - 50, y: measure.screenH - sizeB.height - 20)
+        
+        lhsRotateB.addTarget(self, action: #selector(leftTurn), for: .touchUpInside)
+        rhsRotateB.addTarget(self, action: #selector(rightTurn), for: .touchUpInside)
     }
 
+    
+    @objc func leftTurn(){
+        rotate(with: .lhs)
+    }
+    
+    
+    
+    @objc func rightTurn(){
+        rotate(with: .rhs)
+    }
+    
+    
+    
+    func rotate(with direction: RotateOpt) {
+
+        let sizeOld = sketch.frame.size
+        let originOld = sketch.frame.origin
+        let center = sketch.center
+        let sizeNew = CGSize(width: sizeOld.height, height: sizeOld.width)
+        
+        
+        
+        switch direction {
+        case .lhs:
+            
+            // 逆时针
+            
+            angle -= 1
+            imgView.transform = CGAffineTransform(rotationAngle: ImgSingleAngle.time * angle)
+            
+            sketch.defaultPoints.update(clockwize: false, origin: sizeOld)
+        case .rhs:
+            
+            // 顺时针
+            
+            angle += 1
+            imgView.transform = CGAffineTransform(rotationAngle: ImgSingleAngle.time * angle)
+            
+            sketch.defaultPoints.update(clockwize: true, origin: sizeOld)
+            // 下一步，对 UI 的修改，影响上一步
+            
+        }
+        
+        sketch.frame.size = sizeNew
+        sketch.center = center
+        let originNew = sketch.frame.origin
+        
+        sketch.defaultPoints.patch(vector: originNew - originOld)
+        
+        sketch.reloadData()
+        
+    }
 
 }
 
@@ -108,4 +181,10 @@ extension SketchController: SketchViewProxy{
         magnifierV.renderPoint = pt
     }
     
+}
+
+
+
+struct ImgSingleAngle {
+    static let time = CGFloat.pi * 0.5
 }
