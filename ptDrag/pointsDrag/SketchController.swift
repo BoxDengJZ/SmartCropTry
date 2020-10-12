@@ -22,9 +22,13 @@ struct ImgLayout {
     
     let s: CGSize
     
+    let horizontal: CGFloat
+    
     let screenH: CGFloat
     
     let screenW: CGFloat
+    
+    
     
     init() {
        
@@ -39,6 +43,9 @@ struct ImgLayout {
         center = CGPoint(x: screenW * 0.5, y: screenH * 0.5)
         
         s = CGSize(width: w, height: h)
+        
+        horizontal = w
+        
     }
     
     
@@ -58,6 +65,8 @@ class SketchController: UIViewController {
     lazy var sketch: SketchView = {
         let sk = SketchView()
         sk.delegate = self
+        sk.layer.borderColor = UIColor.green.cgColor
+        sk.layer.borderWidth = 2
         return sk
     }()
     
@@ -125,7 +134,9 @@ class SketchController: UIViewController {
     
     
     func rotate(with direction: RotateOpt) {
-
+        guard let img = image else {
+            return
+        }
         let sizeOld = sketch.frame.size
         let originOld = sketch.frame.origin
         let center = sketch.center
@@ -139,26 +150,49 @@ class SketchController: UIViewController {
             // 逆时针
             
             angle -= 1
-            imgView.transform = CGAffineTransform(rotationAngle: ImgSingleAngle.time * angle)
             
-            sketch.defaultPoints.update(clockwize: false, origin: sizeOld)
+            
+            sketch.defaultPoints.update(clockwize: false, by: sizeOld)
         case .rhs:
             
             // 顺时针
             
             angle += 1
-            imgView.transform = CGAffineTransform(rotationAngle: ImgSingleAngle.time * angle)
             
-            sketch.defaultPoints.update(clockwize: true, origin: sizeOld)
+            sketch.defaultPoints.update(clockwize: true, by: sizeOld)
             // 下一步，对 UI 的修改，影响上一步
             
         }
         
-        sketch.frame.size = sizeNew
+        
+        
+        let ratio: CGFloat
+        
+        let smallS = img.size.size(by: measure.horizontal)
+        let bigS = img.size.size(in: measure.s)
+        if Int(angle) % 2 == 0{
+            ratio = smallS.width / bigS.height
+            
+            imgView.transform = CGAffineTransform(rotationAngle: ImgSingleAngle.time * angle).scaledBy(x: ratio, y: ratio)
+            sketch.frame.size = sizeNew.ratio(by: ratio)
+        }
+        else{
+            ratio = bigS.height / smallS.width
+            imgView.transform = CGAffineTransform(rotationAngle: ImgSingleAngle.time * angle).scaledBy(x: ratio, y: ratio)
+            sketch.frame.size = sizeNew.ratio(by: ratio)
+        }
+            
+        print("ratio", ratio)
+       
         sketch.center = center
         let originNew = sketch.frame.origin
         
         sketch.defaultPoints.patch(vector: originNew - originOld)
+        
+        
+        sketch.defaultPoints.scale(r: ratio)
+        
+        
         
         sketch.reloadData()
         

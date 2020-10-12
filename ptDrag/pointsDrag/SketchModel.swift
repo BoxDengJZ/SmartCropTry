@@ -100,23 +100,23 @@ struct SketchModel{
     
     
     mutating
-    func update(clockwize beC: Bool, origin bySize: CGSize){
+    func update(clockwize beC: Bool, by area: CGSize){
         let lhsTop: CGPoint, rhsTop: CGPoint, rhsBottom: CGPoint, lhsBottom: CGPoint
-        let center = CGPoint(x: bySize.width / 2, y: bySize.height / 2 )
+        let center = CGPoint(x: area.width / 2, y: area.height / 2 )
         if beC{
-            lhsTop = clockwize(rightTurn: leftTop, aroundOrigin: center)
+            lhsTop = clockwize(rightTurn: leftTop, forCoordinate: center)
                
-            rhsTop = clockwize(rightTurn: rightTop, aroundOrigin: center)
+            rhsTop = clockwize(rightTurn: rightTop, forCoordinate: center)
                 
-            rhsBottom = clockwize(rightTurn: rightBottom, aroundOrigin: center)
+            rhsBottom = clockwize(rightTurn: rightBottom, forCoordinate: center)
                 
-            lhsBottom = clockwize(rightTurn: leftBottom, aroundOrigin: center)
+            lhsBottom = clockwize(rightTurn: leftBottom, forCoordinate: center)
         }
         else{
-            lhsTop = antiClockwize(leftTurn: leftTop, aroundOrigin: center)
-            rhsTop = antiClockwize(leftTurn: rightTop, aroundOrigin: center)
-            rhsBottom = antiClockwize(leftTurn: rightBottom, aroundOrigin: center)
-            lhsBottom = antiClockwize(leftTurn: leftBottom, aroundOrigin: center)
+            lhsTop = antiClockwize(leftTurn: leftTop, forCoordinate: center)
+            rhsTop = antiClockwize(leftTurn: rightTop, forCoordinate: center)
+            rhsBottom = antiClockwize(leftTurn: rightBottom, forCoordinate: center)
+            lhsBottom = antiClockwize(leftTurn: leftBottom, forCoordinate: center)
         }
         leftTop = lhsTop
         rightTop = rhsTop
@@ -141,10 +141,20 @@ struct SketchModel{
           
           
       }
+    
+      
+      mutating
+      func scale(r ratio: CGFloat){
+            leftTop.scale(by: ratio)
+            rightTop.scale(by: ratio)
+            rightBottom.scale(by: ratio)
+            leftBottom.scale(by: ratio)
+      }
+    
       
     
       private
-      func clockwize(rightTurn target: CGPoint, aroundOrigin origin: CGPoint) -> CGPoint {
+      func clockwize(rightTurn target: CGPoint, forCoordinate origin: CGPoint) -> CGPoint {
           let dx = target.x - origin.x
           let dy = target.y - origin.y
           let radius = sqrt(dx * dx + dy * dy)
@@ -156,7 +166,7 @@ struct SketchModel{
       
       
       private
-      func antiClockwize(leftTurn target: CGPoint, aroundOrigin origin: CGPoint) -> CGPoint {
+      func antiClockwize(leftTurn target: CGPoint, forCoordinate origin: CGPoint) -> CGPoint {
           let dx = target.x - origin.x
           let dy = target.y - origin.y
           let radius = sqrt(dx * dx + dy * dy)

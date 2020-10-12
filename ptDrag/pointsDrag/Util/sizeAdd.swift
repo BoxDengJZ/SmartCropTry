@@ -37,6 +37,23 @@ extension CGSize{
     }
     
     
+    func size(by horizontal: CGFloat) -> CGSize{
+        
+       
+        
+        let reSolution = height / width
+        
+        
+        print(width, height)
+        
+        return CGSize(width: horizontal, height: horizontal / reSolution)
+       
+        
+    }
     
+    
+    func ratio(by rate: CGFloat) -> CGSize{
+        return CGSize(width: width * rate, height: height * rate)
+    }
     
 }
