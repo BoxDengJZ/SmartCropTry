@@ -8,6 +8,44 @@
 
 import UIKit
 
+
+
+struct ImgLayout {
+    
+    static let std = ImgLayout()
+    
+    let w: CGFloat
+    
+    let h: CGFloat
+    
+    let center: CGPoint
+    
+    let s: CGSize
+    
+    
+    init() {
+       
+        let screenH = UIScreen.main.bounds.height
+        let screenW = UIScreen.main.bounds.width
+        
+        h = screenH - 160
+        
+        
+        w = min(screenW - 80, h - 40)
+        
+        center = CGPoint(x: screenW * 0.5, y: screenH * 0.5)
+        
+        s = CGSize(width: w, height: h)
+    }
+    
+    
+    
+
+}
+
+
+
+
 class SketchController: UIViewController {
     
     var image: UIImage?
@@ -24,18 +62,22 @@ class SketchController: UIViewController {
     
     lazy var magnifierV = MagnifierView(frame: CGRect(x: 0, y: UIScreen.main.bounds.height - magnifieViewWH * 1.5, width: magnifieViewWH, height: magnifieViewWH))
 
+    
+    lazy var measure = ImgLayout()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        view.backgroundColor = UIColor.white
         
-        let maxHeight = view.frame.size.height - 240
+    
         if let img = image{
-            let maxWidth = maxHeight / img.size.height * img.size.width
-            let width = min(view.frame.size.width, maxWidth)
-            let height = width / img.size.width * img.size.height
-            let f = CGRect(x: (view.frame.size.width - width) / 2, y: 80, width: width, height: height)
-            imgView.frame = f
-            sketch.frame = f
+            let s = img.size.size(in: measure.s)
+        
+            imgView.frame.size = s
+            imgView.center = measure.center
+            sketch.frame = imgView.frame
             view.addSubview(imgView)
             view.addSubview(sketch)
             sketch.reloadData()

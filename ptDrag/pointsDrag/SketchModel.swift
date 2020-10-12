@@ -33,14 +33,14 @@ struct SketchModel{
     
     
     init() {
-        leftTop = CGPoint(x: 10, y: 10)
+        leftTop = CGPoint(x: 10, y: 10).advance(50)
         
-        rightTop = CGPoint(x: 100, y: 10)
+        rightTop = CGPoint(x: 100, y: 10).advance(y: 50)
         
         
-        leftBottom = CGPoint(x: 10, y: 100)
+        leftBottom = CGPoint(x: 10, y: 100).advance(y: -50)
         
-        rightBottom = CGPoint(x: 100, y: 100)
+        rightBottom = CGPoint(x: 100, y: 100).advance(-50)
     }
     
 
