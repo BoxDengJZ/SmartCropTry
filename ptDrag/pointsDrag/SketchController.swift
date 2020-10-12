@@ -166,22 +166,20 @@ class SketchController: UIViewController {
         
         
         
-        let ratio: CGFloat
+        var ratio: CGFloat = 1
         
         let smallS = img.size.size(by: measure.horizontal)
         let bigS = img.size.size(in: measure.s)
+        var imgTransform = CGAffineTransform(rotationAngle: ImgSingleAngle.time * angle)
         if Int(angle) % 2 == 0{
             ratio = smallS.width / bigS.height
-            
-            imgView.transform = CGAffineTransform(rotationAngle: ImgSingleAngle.time * angle).scaledBy(x: ratio, y: ratio)
-            sketch.frame.size = sizeNew.ratio(by: ratio)
+            imgTransform = imgTransform.scaledBy(x: ratio, y: ratio)
+            sketch.frame.size = smallS
         }
         else{
-            ratio = bigS.height / smallS.width
-            imgView.transform = CGAffineTransform(rotationAngle: ImgSingleAngle.time * angle).scaledBy(x: ratio, y: ratio)
-            sketch.frame.size = sizeNew.ratio(by: ratio)
+            sketch.frame.size = bigS
         }
-            
+        imgView.transform = imgTransform
         print("ratio", ratio)
        
         sketch.center = center
