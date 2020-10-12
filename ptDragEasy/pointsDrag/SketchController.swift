@@ -39,7 +39,7 @@ struct ImgLayout {
         
         w = min(screenW - 80, h - 40)
         let edge = min(h, w)
-        center = CGPoint(x: screenW * 0.5, y: screenH * 0.5)
+        center = CGPoint(x: screenW * 0.5, y: screenH * 0.5 + 40)
         
         s = CGSize(width: edge, height: edge)
         
@@ -70,7 +70,7 @@ class SketchController: UIViewController {
     
     let magnifieViewWH : CGFloat = 150
     
-    lazy var magnifierV = MagnifierView(frame: CGRect(x: 0, y: UIScreen.main.bounds.height - magnifieViewWH * 1.5, width: magnifieViewWH, height: magnifieViewWH))
+    lazy var magnifierV = MagnifierView(frame: CGRect(x: 20, y: 20, width: magnifieViewWH, height: magnifieViewWH))
 
     
     lazy var measure = ImgLayout()
