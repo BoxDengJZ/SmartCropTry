@@ -20,7 +20,9 @@ func -(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
 
 extension CGPoint{
     mutating
-    func scale(by rate: CGFloat){
-        self = CGPoint(x: x * rate, y: y * rate)
+    func scale(by rate: CGFloat, forS size: CGSize){
+        let newX = size.width * 0.5 * rate + (x - size.width * 0.5) * rate * 0.5
+        let newY = size.height * 0.5 * rate + (y - size.height * 0.5) * rate * 0.5
+        self = CGPoint(x: newX, y: newY)
     }
 }

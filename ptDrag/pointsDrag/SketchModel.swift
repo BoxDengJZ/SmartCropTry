@@ -144,11 +144,11 @@ struct SketchModel{
     
       
       mutating
-      func scale(r ratio: CGFloat){
-            leftTop.scale(by: ratio)
-            rightTop.scale(by: ratio)
-            rightBottom.scale(by: ratio)
-            leftBottom.scale(by: ratio)
+      func scale(r ratio: CGFloat, forS size: CGSize){
+            leftTop.scale(by: ratio, forS: size)
+            rightTop.scale(by: ratio, forS: size)
+            rightBottom.scale(by: ratio, forS: size)
+            leftBottom.scale(by: ratio, forS: size)
       }
     
       

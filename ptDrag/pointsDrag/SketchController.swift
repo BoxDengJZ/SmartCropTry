@@ -140,10 +140,7 @@ class SketchController: UIViewController {
         let sizeOld = sketch.frame.size
         let originOld = sketch.frame.origin
         let center = sketch.center
-        let sizeNew = CGSize(width: sizeOld.height, height: sizeOld.width)
-        
-        
-        
+  
         switch direction {
         case .lhs:
             
@@ -171,12 +168,13 @@ class SketchController: UIViewController {
         let smallS = img.size.size(by: measure.horizontal)
         let bigS = img.size.size(in: measure.s)
         var imgTransform = CGAffineTransform(rotationAngle: ImgSingleAngle.time * angle)
-        if Int(angle) % 2 == 0{
+        if Int(angle) % 2 == 1{
             ratio = smallS.width / bigS.height
             imgTransform = imgTransform.scaledBy(x: ratio, y: ratio)
             sketch.frame.size = smallS
         }
         else{
+            ratio = bigS.height / smallS.width
             sketch.frame.size = bigS
         }
         imgView.transform = imgTransform
@@ -188,7 +186,7 @@ class SketchController: UIViewController {
         sketch.defaultPoints.patch(vector: originNew - originOld)
         
         
-        sketch.defaultPoints.scale(r: ratio)
+        sketch.defaultPoints.scale(r: ratio, forS: sketch.frame.size)
         
         
         
