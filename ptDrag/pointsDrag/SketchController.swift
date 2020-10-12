@@ -135,6 +135,11 @@ class SketchController: UIViewController {
         guard let img = image else {
             return
         }
+        
+        let imgRatio = img.size.height / img.size.width
+        let const = 4.0/3
+        print(imgRatio, const)
+        
         let sizeOld = sketch.frame.size
         let originOld = sketch.frame.origin
         let center = sketch.center
@@ -179,6 +184,9 @@ class SketchController: UIViewController {
             
         }
      
+        // 旋转四个拖拽的点之前，先复位
+        
+        // 小的，变大的，的时候，需要操作
         if Int(angle) % 2 == 0{
             print("1/ratio", 1/ratio)
             sketch.defaultPoints.scale(r: ratio, forS: sizeOld)
@@ -192,6 +200,10 @@ class SketchController: UIViewController {
         
         sketch.defaultPoints.patch(vector: originNew - originOld)
         
+        
+        //  四个拖拽的点， 属于正常标准的图片
+        
+        // 横着摆放，大变小
         if Int(angle) % 2 == 1{
             print("ratio", ratio)
             sketch.defaultPoints.scale(r: ratio, forS: sizeOld)

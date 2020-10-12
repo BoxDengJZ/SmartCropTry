@@ -132,9 +132,7 @@ class SketchController: UIViewController {
     
     
     func rotate(with direction: RotateOpt) {
-        guard let img = image else {
-            return
-        }
+        
         let sizeOld = sketch.frame.size
         let originOld = sketch.frame.origin
         let center = sketch.center
