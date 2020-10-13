@@ -2,6 +2,12 @@
 Smart Crop Try, 努力仿照 “全能扫描王”
 
 
+## [juejin blog: 仿扫描全能王的选择区域功能：拍照，旋转](https://juejin.im/post/6882950524786704398)
+
+
+## [juejin blog: 低仿扫描全能王的选择区域功能](https://juejin.im/post/6875134095232335880)
+
+
 
 ### 端点拖动， 和放大镜
 
