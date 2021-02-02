@@ -24,7 +24,7 @@ public class SECropView: UIView {
     fileprivate var imageView : UIImageView?
 
 	var isPathvalid: Bool {
-		return areaQuadrangle.isPathValid
+		areaQuadrangle.isPathValid
 	}
 
     public private(set) var cornerLocations : [CGPoint]?
