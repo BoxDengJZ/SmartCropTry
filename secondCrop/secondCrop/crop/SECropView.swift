@@ -46,19 +46,8 @@ public class SECropView: UIView {
         return path
     }
     
-    var cornersScale : CGPoint? {
-        guard let imageView = imageView else { return nil }
-        guard let image = imageView.image else { return nil }
-        
-        let imageSizeAspectFit = AVMakeRect(aspectRatio: image.size, insideRect: imageView.bounds).size
-        
-        return CGPoint(x: imageSizeAspectFit.width / (image.size.width * image.scale),
-                       y: imageSizeAspectFit.height / (image.size.height * image.scale))
-    }
-    
     public var cornersLocationOnView : [CGPoint]? {
         guard let imageSize = imageView?.image?.size else { return nil }
-        guard let scale = cornersScale else { return nil }
         guard let imageViewFrame = imageView?.bounds else { return nil }
         guard let imageViewOrigin = imageView?.globalPoint else { return nil }
         guard let cropViewOrigin = self.globalPoint else { return nil }
@@ -69,9 +58,14 @@ public class SECropView: UIView {
 	let shiftY = -cropViewOrigin.y + imageViewOrigin.y + imageOrigin.y + SECropView.cornerSize / 2.0
         let shift = CGPoint(x: shiftX, y: shiftY)
         
-        return cornersOnImage.map {
-            CGPoint(x: $0.x * scale.x + shift.x, y: $0.y * scale.y + shift.y)
+        let pts = cornersOnImage.map {
+            CGPoint(x: $0.x + shift.x, y: $0.y + shift.y)
         }
+        
+        print("pts: ", pts)
+        
+        
+        return pts
     }
     
     // MARK: initialization
@@ -126,7 +120,16 @@ public class SECropView: UIView {
         setNeedsDisplay()
     }
     
-    public func configureWithCorners(corners : Array<CGPoint>, on imageView: UIImageView) {
+    public func configureWithCorners(on imageView: UIImageView) {
+        let f = imageView.bounds
+        let first = f.origin
+        let rhsTop = CGPoint(x: first.x + f.width, y: first.y)
+        let lhsHip = CGPoint(x: first.x, y: first.y + f.height)
+        let end = CGPoint(x: rhsTop.x, y: lhsHip.y)
+        let corners = [first, rhsTop, end, lhsHip]
+        
+        
+        
         self.cornerLocations = corners
         self.imageView = imageView
         self.imageView?.isUserInteractionEnabled = true
@@ -226,11 +229,10 @@ public class SECropView: UIView {
         
         update(scale: 0)
 
-        guard let scale = cornersScale else { return }
         guard let cornerLocations = cornerLocations else { return }
         guard let img = imageView?.image else { return }
-        let newCenterOnImage = CGPoint(x: cornerLocations[cornerOnTouch].x + derivative.x / scale.x,
-                                       y: cornerLocations[cornerOnTouch].y + derivative.y / scale.y).normalized(size: CGSize(width: img.size.width * img.scale,
+        let newCenterOnImage = CGPoint(x: cornerLocations[cornerOnTouch].x + derivative.x,
+                                       y: cornerLocations[cornerOnTouch].y + derivative.y).normalized(size: CGSize(width: img.size.width * img.scale,
                                                                                                                              height: img.size.height * img.scale))
         self.cornerLocations?[cornerOnTouch] = newCenterOnImage
         print(newCenterOnImage)

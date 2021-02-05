@@ -12,13 +12,13 @@ class ViewController: UIViewController {
     let cropView = SECropView()
     @IBOutlet weak var imageView: UIImageView!
 
+    var b = CGSize.zero
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        cropView.configureWithCorners(corners: [CGPoint(x: 120, y: 100),
-                                                CGPoint(x: 270, y: 170),
-                                                CGPoint(x: 280, y: 450),
-                                                CGPoint(x: 120, y: 400)], on: imageView)
+        b = imageView.bounds.size
+        cropView.configureWithCorners(on: imageView)
     }
 
 
@@ -27,8 +27,10 @@ class ViewController: UIViewController {
         do {
             guard let corners = cropView.cornerLocations else { return }
             guard let image = imageView.image else { return }
-            
-            let croppedImage = try SEQuadrangleHelper.cropImage(with: image, quad: corners)
+            let cn = corners.map { (pt) -> CGPoint in
+                return pt.inner(img: b, relative: image.size)
+            }
+            let croppedImage = try SEQuadrangleHelper.cropImage(with: image, quad: cn)
             
             performSegue(withIdentifier: "doCrop", sender: croppedImage)
         } catch let error as SECropError {
@@ -45,3 +47,12 @@ class ViewController: UIViewController {
     }
 }
 
+
+
+extension CGPoint{
+    func inner(img s: CGSize, relative dot: CGSize) -> CGPoint{
+        let xx = x * dot.width/s.width
+        let yy = y * dot.height/s.height
+        return CGPoint(x: xx, y: yy)
+    }
+}
