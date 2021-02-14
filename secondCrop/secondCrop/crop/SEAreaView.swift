@@ -46,7 +46,7 @@ class SEAreaView: UIView {
         context?.setLineJoin(.round)
         
         
-        context?.setStrokeColor((isPathValid ? SECropView.goodAreaColor : SECropView.badAreaColor).cgColor)
+        context?.setStrokeColor((isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor).cgColor)
         context?.strokePath()
         
         context?.saveGState()

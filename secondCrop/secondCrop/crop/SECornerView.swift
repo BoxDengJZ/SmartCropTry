@@ -29,8 +29,8 @@ class SECornerView: UIView {
 
         let context = UIGraphicsGetCurrentContext()!
         
-        context.translateBy(x: -(position.size.width / 2 - SECropView.cornerSize / 2),
-                            y: -(position.size.width / 2 - SECropView.cornerSize / 2))
+        context.translateBy(x: -(position.size.width / 2 - Setting.std.cornerSize / 2),
+                            y: -(position.size.width / 2 - Setting.std.cornerSize / 2))
 
         context.translateBy(x: -touchPoint.x,
                             y: -touchPoint.y)

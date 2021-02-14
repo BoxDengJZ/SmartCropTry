@@ -9,14 +9,24 @@
 import UIKit
 import AVFoundation
 
+
+struct Setting {
+    static let std = Setting()
+    
+    let goodAreaColor = UIColor.green
+    let badAreaColor  = UIColor.red
+   
+    let cornerSize : CGFloat = 25.0
+    let cornerCount = 4
+}
+
 public class SECropView: UIView {
     
-    // MARK: properties
-    public static let goodAreaColor = UIColor.green
-    public static let badAreaColor  = UIColor.red
     
-    public static let cornerSize : CGFloat = 25.0
-    public static let cornerCount = 4
+    // MARK: properties
+    
+    
+    
     var areaQuadrangle = SEAreaView()
     
     
@@ -41,8 +51,8 @@ public class SECropView: UIView {
                              y: firstPt.center.y - areaQuadrangle.frame.origin.y)
         path.move(to: beginPt)
         for i in 1...3{
-            let pt = CGPoint(x: corners[i % SECropView.cornerCount].center.x - areaQuadrangle.frame.origin.x,
-                             y: corners[i % SECropView.cornerCount].center.y - areaQuadrangle.frame.origin.y)
+            let pt = CGPoint(x: corners[i % Setting.std.cornerCount].center.x - areaQuadrangle.frame.origin.x,
+                             y: corners[i % Setting.std.cornerCount].center.y - areaQuadrangle.frame.origin.y)
             path.addLine(to: pt)
         }
         path.closeSubpath()
@@ -57,8 +67,8 @@ public class SECropView: UIView {
         guard let cornersOnImage = cornerLocations else { return nil }
         
         let imageOrigin = AVMakeRect(aspectRatio: imageSize, insideRect: imageViewFrame).origin
-        let shiftX = -cropViewOrigin.x + imageViewOrigin.x + imageOrigin.x + SECropView.cornerSize / 2.0
-        let shiftY = -cropViewOrigin.y + imageViewOrigin.y + imageOrigin.y + SECropView.cornerSize / 2.0
+        let shiftX = -cropViewOrigin.x + imageViewOrigin.x + imageOrigin.x + Setting.std.cornerSize / 2.0
+        let shiftY = -cropViewOrigin.y + imageViewOrigin.y + imageOrigin.y + Setting.std.cornerSize / 2.0
         let shift = CGPoint(x: shiftX, y: shiftY)
         
         let pts = cornersOnImage.map {
@@ -93,9 +103,9 @@ public class SECropView: UIView {
         DispatchQueue.main.async {
             
             if let cornerPositions = self.cornersLocationOnView {
-                for i in 0 ..< SECropView.cornerCount {
-                    self.corners[i].center = CGPoint(x: cornerPositions[i].x - SECropView.cornerSize / 2.0,
-                                                y: cornerPositions[i].y - SECropView.cornerSize / 2.0)
+                for i in 0 ..< Setting.std.cornerCount {
+                    self.corners[i].center = CGPoint(x: cornerPositions[i].x - Setting.std.cornerSize / 2.0,
+                                                y: cornerPositions[i].y - Setting.std.cornerSize / 2.0)
                     self.corners[i].setNeedsDisplay()
                 }
             }
@@ -123,9 +133,6 @@ public class SECropView: UIView {
         let lhsHip = CGPoint(x: first.x, y: first.y + f.height)
         let end = CGPoint(x: rhsTop.x, y: lhsHip.y)
         let corners = [first, rhsTop, end, lhsHip]
-        
-        
-        
         self.cornerLocations = corners
         self.imageView = imageView
         self.imageView?.isUserInteractionEnabled = true
@@ -137,13 +144,11 @@ public class SECropView: UIView {
             }
         }
         
-        for _ in 0..<SECropView.cornerCount {
-            let corner = SECornerView(frame: CGRect(x: 0, y: 0, width: SECropView.cornerSize, height: SECropView.cornerSize))
+        for _ in 0..<Setting.std.cornerCount {
+            let corner = SECornerView(frame: CGRect(x: 0, y: 0, width: Setting.std.cornerSize, height: Setting.std.cornerSize))
             addSubview(corner)
             self.corners.append(corner)
         }
-        
-        areaQuadrangle.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         areaQuadrangle.frame = bounds
         areaQuadrangle.backgroundColor = .clear
         areaQuadrangle.cropView = self
@@ -151,7 +156,7 @@ public class SECropView: UIView {
         areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: corners)
         addSubview(areaQuadrangle)
         for corner in self.corners {
-            corner.layer.borderColor = (areaQuadrangle.isPathValid ? SECropView.goodAreaColor : SECropView.badAreaColor ).cgColor
+            corner.layer.borderColor = (areaQuadrangle.isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor ).cgColor
             corner.scaleDown()
         }
         areaQuadrangle.setNeedsDisplay()
@@ -160,9 +165,9 @@ public class SECropView: UIView {
     
     public func setCorners(newCorners: [CGPoint]) {
 		areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: newCorners)
-        for i in 0 ..< SECropView.cornerCount {
+        for i in 0 ..< Setting.std.cornerCount {
             cornerLocations?[i] = newCorners[i]
-			corners[i].layer.borderColor = (areaQuadrangle.isPathValid ? SECropView.goodAreaColor : SECropView.badAreaColor ).cgColor
+			corners[i].layer.borderColor = (areaQuadrangle.isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor ).cgColor
         }
         pairPositionsAndViews()
         setNeedsDisplay()
@@ -183,7 +188,7 @@ public class SECropView: UIView {
         self.corners[self.cornerOnTouch].setNeedsDisplay()
         self.areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: self.corners.map{ $0.center })
         for corner in self.corners {
-            corner.layer.borderColor = (self.areaQuadrangle.isPathValid ? SECropView.goodAreaColor : SECropView.badAreaColor).cgColor
+            corner.layer.borderColor = (self.areaQuadrangle.isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor).cgColor
         }
     }
 
@@ -199,7 +204,7 @@ public class SECropView: UIView {
         
         var bestDistance : CGFloat = 1000.0 * 1000.0 * 1000.0
         
-        for i in 0 ..< SECropView.cornerCount {
+        for i in 0 ..< Setting.std.cornerCount {
             let tmpPoint = corners[i].center
             let distance : CGFloat =
                 (point.x - tmpPoint.x) * (point.x - tmpPoint.x) +
