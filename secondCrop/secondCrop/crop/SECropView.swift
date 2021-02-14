@@ -66,8 +66,6 @@ public class SECropView: UIView {
         }
         
         print("pts: ", pts)
-        
-        
         return pts
     }
     
@@ -75,15 +73,15 @@ public class SECropView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        internalInit()
+        setup()
     }
     
     required public init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
-        internalInit()
+        setup()
     }
     
-    fileprivate func internalInit() {
+    fileprivate func setup() {
         backgroundColor = UIColor.clear
         clipsToBounds = true
         autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -103,11 +101,6 @@ public class SECropView: UIView {
             }
             self.areaQuadrangle.setNeedsDisplay()
         }
-    }
-    
-    public override func layoutMarginsDidChange() {
-        super.layoutMarginsDidChange()
-        layoutSubviews()
     }
     
     public override func layoutSubviews() {
