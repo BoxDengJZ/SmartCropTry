@@ -37,14 +37,13 @@ public class SECropView: UIView {
             return CGMutablePath()
         }
         
-        let initPt = CGPoint(x: firstPt.center.x - areaQuadrangle.frame.origin.x,
+        let beginPt = CGPoint(x: firstPt.center.x - areaQuadrangle.frame.origin.x,
                              y: firstPt.center.y - areaQuadrangle.frame.origin.y)
-        path.move(to: initPt)
-        for i in 0 ..< (SECropView.cornerCount - 1) {
-            let pt = CGPoint(x: corners[(i + 1) % SECropView.cornerCount].center.x - areaQuadrangle.frame.origin.x,
-                             y: corners[(i + 1) % SECropView.cornerCount].center.y - areaQuadrangle.frame.origin.y)
+        path.move(to: beginPt)
+        for i in 1...3{
+            let pt = CGPoint(x: corners[i % SECropView.cornerCount].center.x - areaQuadrangle.frame.origin.x,
+                             y: corners[i % SECropView.cornerCount].center.y - areaQuadrangle.frame.origin.y)
             path.addLine(to: pt)
-            
         }
         path.closeSubpath()
         return path
@@ -59,7 +58,7 @@ public class SECropView: UIView {
         
         let imageOrigin = AVMakeRect(aspectRatio: imageSize, insideRect: imageViewFrame).origin
         let shiftX = -cropViewOrigin.x + imageViewOrigin.x + imageOrigin.x + SECropView.cornerSize / 2.0
-	let shiftY = -cropViewOrigin.y + imageViewOrigin.y + imageOrigin.y + SECropView.cornerSize / 2.0
+        let shiftY = -cropViewOrigin.y + imageViewOrigin.y + imageOrigin.y + SECropView.cornerSize / 2.0
         let shift = CGPoint(x: shiftX, y: shiftY)
         
         let pts = cornersOnImage.map {
