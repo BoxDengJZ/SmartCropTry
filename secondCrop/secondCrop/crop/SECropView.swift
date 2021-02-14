@@ -12,13 +12,15 @@ import AVFoundation
 public class SECropView: UIView {
     
     // MARK: properties
-    public static var goodAreaColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
-    public static var badAreaColor  = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+    public static let goodAreaColor = UIColor.green
+    public static let badAreaColor  = UIColor.red
     
-    public static var cornerSize : CGFloat = 25.0
-
+    public static let cornerSize : CGFloat = 25.0
+    public static let cornerCount = 4
     var areaQuadrangle = SEAreaView()
     
+    
+    // 四个点
     fileprivate var corners = [SECornerView]()
     fileprivate var cornerOnTouch = -1
     fileprivate var imageView : UIImageView?
@@ -38,9 +40,9 @@ public class SECropView: UIView {
         let initPt = CGPoint(x: firstPt.center.x - areaQuadrangle.frame.origin.x,
                              y: firstPt.center.y - areaQuadrangle.frame.origin.y)
         path.move(to: initPt)
-        for i in 0 ..< (corners.count - 1) {
-            let pt = CGPoint(x: corners[(i + 1) % corners.count].center.x - areaQuadrangle.frame.origin.x,
-                             y: corners[(i + 1) % corners.count].center.y - areaQuadrangle.frame.origin.y)
+        for i in 0 ..< (SECropView.cornerCount - 1) {
+            let pt = CGPoint(x: corners[(i + 1) % SECropView.cornerCount].center.x - areaQuadrangle.frame.origin.x,
+                             y: corners[(i + 1) % SECropView.cornerCount].center.y - areaQuadrangle.frame.origin.y)
             path.addLine(to: pt)
             
         }
@@ -94,7 +96,7 @@ public class SECropView: UIView {
         DispatchQueue.main.async {
             
             if let cornerPositions = self.cornersLocationOnView {
-                for i in 0 ..< self.corners.count {
+                for i in 0 ..< SECropView.cornerCount {
                     self.corners[i].center = CGPoint(x: cornerPositions[i].x - SECropView.cornerSize / 2.0,
                                                 y: cornerPositions[i].y - SECropView.cornerSize / 2.0)
                     self.corners[i].setNeedsDisplay()
@@ -143,7 +145,7 @@ public class SECropView: UIView {
             }
         }
         
-        for _ in 0 ..< 4 {
+        for _ in 0..<SECropView.cornerCount {
             let corner = SECornerView(frame: CGRect(x: 0, y: 0, width: SECropView.cornerSize, height: SECropView.cornerSize))
             addSubview(corner)
             self.corners.append(corner)
@@ -166,7 +168,7 @@ public class SECropView: UIView {
     
     public func setCorners(newCorners: [CGPoint]) {
 		areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: newCorners)
-        for i in 0 ..< corners.count {
+        for i in 0 ..< SECropView.cornerCount {
             cornerLocations?[i] = newCorners[i]
 			corners[i].layer.borderColor = (areaQuadrangle.isPathValid ? SECropView.goodAreaColor : SECropView.badAreaColor ).cgColor
         }
@@ -198,14 +200,14 @@ public class SECropView: UIView {
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         
-        guard touches.count == 1 && corners.count > 2 else {
+        guard touches.count == 1 else {
             return
         }
         let point = touches.first!.location(in: self)
         
         var bestDistance : CGFloat = 1000.0 * 1000.0 * 1000.0
         
-        for i in 0 ..< corners.count {
+        for i in 0 ..< SECropView.cornerCount {
             let tmpPoint = corners[i].center
             let distance : CGFloat =
                 (point.x - tmpPoint.x) * (point.x - tmpPoint.x) +
