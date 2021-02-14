@@ -19,7 +19,7 @@ public class SECropView: UIView {
 
     var areaQuadrangle = SEAreaView()
     
-    fileprivate var corners = Array<SECornerView>()
+    fileprivate var corners = [SECornerView]()
     fileprivate var cornerOnTouch = -1
     fileprivate var imageView : UIImageView?
 
@@ -31,12 +31,14 @@ public class SECropView: UIView {
     
     var path : CGMutablePath {
         let path = CGMutablePath()
-        guard let firstPt = corners.first else { return CGMutablePath() }
+        guard let firstPt = corners.first else {
+            return CGMutablePath()
+        }
         
         let initPt = CGPoint(x: firstPt.center.x - areaQuadrangle.frame.origin.x,
                              y: firstPt.center.y - areaQuadrangle.frame.origin.y)
         path.move(to: initPt)
-        for i in 0 ..< corners.count - 1 {
+        for i in 0 ..< (corners.count - 1) {
             let pt = CGPoint(x: corners[(i + 1) % corners.count].center.x - areaQuadrangle.frame.origin.x,
                              y: corners[(i + 1) % corners.count].center.y - areaQuadrangle.frame.origin.y)
             path.addLine(to: pt)
@@ -175,7 +177,7 @@ public class SECropView: UIView {
     fileprivate func update(scale : Int) {
         guard self.cornerOnTouch != -1 else { return }
         switch scale {
-        case +1:
+        case 1:
             self.corners[self.cornerOnTouch].scaleUp()
             self.bringSubviewToFront(self.corners[self.cornerOnTouch])
             self.bringSubviewToFront(self.areaQuadrangle)
@@ -213,7 +215,7 @@ public class SECropView: UIView {
                 cornerOnTouch = i
             }
         }
-        update(scale: +1)
+        update(scale: 1)
     }
     
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
