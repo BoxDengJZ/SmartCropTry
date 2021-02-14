@@ -115,7 +115,6 @@ public class SECropView: UIView {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        print(#function)
         if let imgsize = imageView?.image?.size, let imageBounds = imageView?.bounds {
             let imageOrigin = AVMakeRect(aspectRatio: imgsize, insideRect: imageBounds)
             frame = imageOrigin
@@ -123,7 +122,6 @@ public class SECropView: UIView {
         }
         self.pairPositionsAndViews()
         self.update(scale: 0)
-        setNeedsDisplay()
     }
     
     public func configureWithCorners(on imageView: UIImageView) {
@@ -170,7 +168,6 @@ public class SECropView: UIView {
 			corners[i].layer.borderColor = (areaQuadrangle.isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor ).cgColor
         }
         pairPositionsAndViews()
-        setNeedsDisplay()
     }
     
     fileprivate func update(scale : Int) {
