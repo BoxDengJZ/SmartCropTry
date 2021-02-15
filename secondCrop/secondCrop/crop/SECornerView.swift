@@ -26,17 +26,13 @@ class SECornerView: UIView {
         UIView.animate(withDuration: 0.15, animations: {
             self.layer.borderWidth = 0.5
             self.transform = CGAffineTransform.identity.scaledBy(x: 2, y: 2)
-        }) { (_) in
-            self.setNeedsDisplay()
-        }
+        })
     }
     
     func scaleDown() {
         UIView.animate(withDuration: 0.15, animations: {
             self.layer.borderWidth = 1
             self.transform = CGAffineTransform.identity
-        }) { (_) in
-            self.setNeedsDisplay()
-        }
+        })
     }
 }

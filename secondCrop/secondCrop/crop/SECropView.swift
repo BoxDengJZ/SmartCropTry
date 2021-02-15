@@ -166,7 +166,8 @@ public class SECropView: UIView {
             self.corners[touchIdx].scaleUp()
         case -1:
             self.corners[touchIdx].scaleDown()
-        default: break
+        default:
+            break
         }
         self.areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: corners.map{ $0.center })
         for corner in self.corners {
