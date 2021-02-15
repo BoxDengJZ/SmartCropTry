@@ -22,14 +22,8 @@ struct Setting {
 
 public class SECropView: UIView {
     
-    
     // MARK: properties
-    
-    
-    
     var areaQuadrangle = SEAreaView()
-    
-    
     // 四个点
     fileprivate var corners = [SECornerView]()
     fileprivate var cornerOnTouch = -1
@@ -100,17 +94,14 @@ public class SECropView: UIView {
     // MARK: layout
     
     fileprivate func pairPositionsAndViews() {
-        DispatchQueue.main.async {
-            
-            if let cornerPositions = self.cornersLocationOnView {
-                for i in 0 ..< Setting.std.cornerCount {
-                    self.corners[i].center = CGPoint(x: cornerPositions[i].x - Setting.std.cornerSize / 2.0,
-                                                y: cornerPositions[i].y - Setting.std.cornerSize / 2.0)
-                    self.corners[i].setNeedsDisplay()
-                }
+        if let cornerPositions = self.cornersLocationOnView {
+            for i in 0 ..< Setting.std.cornerCount {
+                self.corners[i].center = CGPoint(x: cornerPositions[i].x - Setting.std.cornerSize / 2.0,
+                                            y: cornerPositions[i].y - Setting.std.cornerSize / 2.0)
+                self.corners[i].setNeedsDisplay()
             }
-            self.areaQuadrangle.setNeedsDisplay()
         }
+        self.areaQuadrangle.setNeedsDisplay()
     }
     
     public override func layoutSubviews() {
