@@ -159,20 +159,18 @@ public class SECropView: UIView {
         pairPositionsAndViews()
     }
     
-    fileprivate func update(scale : Int) {
+    fileprivate func update(scale: Int) {
         guard let touchIdx = cornerOnTouch else {
             return
         }
         switch scale {
         case 1:
             self.corners[touchIdx].scaleUp()
-            self.bringSubviewToFront(self.corners[touchIdx])
-            self.bringSubviewToFront(self.areaQuadrangle)
         case -1:
             self.corners[touchIdx].scaleDown()
         default: break
         }
-        self.areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: self.corners.map{ $0.center })
+        self.areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: corners.map{ $0.center })
         for corner in self.corners {
             corner.layer.borderColor = (self.areaQuadrangle.isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor).cgColor
         }
