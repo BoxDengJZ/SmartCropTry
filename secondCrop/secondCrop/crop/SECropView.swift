@@ -35,7 +35,7 @@ public class SECropView: UIView {
 
     public private(set) var cornerLocations : [CGPoint]?
     
-    var path : CGMutablePath {
+    var path: CGMutablePath {
         let path = CGMutablePath()
         guard let firstPt = corners.first else {
             return CGMutablePath()
@@ -162,7 +162,9 @@ public class SECropView: UIView {
     }
     
     fileprivate func update(scale : Int) {
-        guard self.cornerOnTouch != -1 else { return }
+        guard self.cornerOnTouch != -1 else {
+            return
+        }
         switch scale {
         case 1:
             self.corners[self.cornerOnTouch].scaleUp()
@@ -190,7 +192,7 @@ public class SECropView: UIView {
         }
         let point = touches.first!.location(in: self)
         
-        var bestDistance : CGFloat = 1000.0 * 1000.0 * 1000.0
+        var bestDistance: CGFloat = 1000.0 * 1000.0 * 1000.0
         
         for i in 0 ..< Setting.std.cornerCount {
             let tmpPoint = corners[i].center
