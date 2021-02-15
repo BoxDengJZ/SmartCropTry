@@ -26,7 +26,7 @@ public class SECropView: UIView {
     var areaQuadrangle = SEAreaView()
     // 四个点
     fileprivate var corners = [SECornerView]()
-    fileprivate var cornerOnTouch = -1
+    fileprivate var cornerOnTouch: Int? = nil
     fileprivate var imageView : UIImageView?
 
 	var isPathvalid: Bool {
@@ -160,16 +160,16 @@ public class SECropView: UIView {
     }
     
     fileprivate func update(scale : Int) {
-        guard self.cornerOnTouch != -1 else {
+        guard let touchIdx = cornerOnTouch else {
             return
         }
         switch scale {
         case 1:
-            self.corners[self.cornerOnTouch].scaleUp()
-            self.bringSubviewToFront(self.corners[self.cornerOnTouch])
+            self.corners[touchIdx].scaleUp()
+            self.bringSubviewToFront(self.corners[touchIdx])
             self.bringSubviewToFront(self.areaQuadrangle)
         case -1:
-            self.corners[self.cornerOnTouch].scaleDown()
+            self.corners[touchIdx].scaleDown()
         default: break
         }
         self.areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: self.corners.map{ $0.center })
@@ -205,7 +205,7 @@ public class SECropView: UIView {
     
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
-        guard cornerOnTouch != -1 && touches.count == 1 else {
+        guard let touchIdx = cornerOnTouch, touches.count == 1 else {
             return
         }
         
@@ -218,10 +218,10 @@ public class SECropView: UIView {
 
         guard let cornerLocations = cornerLocations else { return }
         guard let img = imageView?.image else { return }
-        let newCenterOnImage = CGPoint(x: cornerLocations[cornerOnTouch].x + derivative.x,
-                                       y: cornerLocations[cornerOnTouch].y + derivative.y).normalized(size: CGSize(width: img.size.width * img.scale,
-                                                                                                                             height: img.size.height * img.scale))
-        self.cornerLocations?[cornerOnTouch] = newCenterOnImage
+        let referSize = CGSize(width: img.size.width * img.scale, height: img.size.height * img.scale)
+        let rawPt = CGPoint(x: cornerLocations[touchIdx].x + derivative.x, y: cornerLocations[touchIdx].y + derivative.y)
+        let newCenterOnImage = rawPt.normalized(size: referSize)
+        self.cornerLocations?[touchIdx] = newCenterOnImage
         print(newCenterOnImage)
         
         pairPositionsAndViews()
@@ -231,10 +231,10 @@ public class SECropView: UIView {
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         
-        guard cornerOnTouch != -1 && touches.count == 1 else {
+        guard cornerOnTouch != nil, touches.count == 1 else {
             return
         }
         update(scale: -1)
-        cornerOnTouch = -1
+        cornerOnTouch = nil
     }
 }
