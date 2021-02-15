@@ -16,19 +16,11 @@ class SEAreaView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentMode = .redraw
-        
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        CATransaction.commit()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         contentMode = .redraw
-        
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        CATransaction.commit()
     }
     
     override func draw(_ rect: CGRect) {
@@ -48,15 +40,11 @@ class SEAreaView: UIView {
         
         context?.setStrokeColor((isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor).cgColor)
         context?.strokePath()
-        
-        context?.saveGState()
         context?.addRect(bounds)
         context?.addPath(p)
         
         context?.setFillColor(UIColor(white: 0.3, alpha: 0.2).cgColor)
         context?.drawPath(using: .eoFill)
-        
-        context?.restoreGState()
     }
     
     
