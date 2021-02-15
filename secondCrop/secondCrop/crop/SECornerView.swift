@@ -22,20 +22,6 @@ class SECornerView: UIView {
         super.init(coder: aDecoder)
     }
     
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        let f = superview!.convert(self.frame, to: nil)
-        let touchPoint = f.origin
-
-        let context = UIGraphicsGetCurrentContext()!
-        
-        context.translateBy(x: -(f.size.width / 2 - Setting.std.cornerSize / 2),
-                            y: -(f.size.width / 2 - Setting.std.cornerSize / 2))
-
-        context.translateBy(x: -touchPoint.x,
-                            y: -touchPoint.y)
-    }
-    
     func scaleUp() {
         UIView.animate(withDuration: 0.15, animations: {
             self.layer.borderWidth = 0.5
