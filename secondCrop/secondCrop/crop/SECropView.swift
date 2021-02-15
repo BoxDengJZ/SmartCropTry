@@ -99,7 +99,7 @@ public class SECropView: UIView {
                                             y: cornerPositions[i].y - Setting.std.cornerSize / 2.0)
             }
         }
-        self.areaQuadrangle.setNeedsDisplay()
+        self.areaQuadrangle.fill(path: path)
     }
     
     public override func layoutSubviews() {
@@ -138,15 +138,13 @@ public class SECropView: UIView {
         }
         areaQuadrangle.frame = bounds
         areaQuadrangle.backgroundColor = .clear
-        areaQuadrangle.cropView = self
-        
         areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: corners)
         addSubview(areaQuadrangle)
         for corner in self.corners {
             corner.layer.borderColor = (areaQuadrangle.isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor ).cgColor
             corner.scaleDown()
         }
-        areaQuadrangle.setNeedsDisplay()
+        areaQuadrangle.fill(path: path)
         layoutSubviews()
     }
     
@@ -223,7 +221,7 @@ public class SECropView: UIView {
         print(newCenterOnImage)
         
         pairPositionsAndViews()
-        areaQuadrangle.setNeedsDisplay()
+        areaQuadrangle.fill(path: path)
     }
     
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
