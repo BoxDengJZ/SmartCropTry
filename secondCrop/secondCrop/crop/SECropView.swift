@@ -88,7 +88,6 @@ public class SECropView: UIView {
     fileprivate func setup() {
         backgroundColor = UIColor.clear
         clipsToBounds = true
-        autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
     
     // MARK: layout
@@ -98,7 +97,6 @@ public class SECropView: UIView {
             for i in 0 ..< Setting.std.cornerCount {
                 self.corners[i].center = CGPoint(x: cornerPositions[i].x - Setting.std.cornerSize / 2.0,
                                             y: cornerPositions[i].y - Setting.std.cornerSize / 2.0)
-                self.corners[i].setNeedsDisplay()
             }
         }
         self.areaQuadrangle.setNeedsDisplay()
@@ -174,8 +172,6 @@ public class SECropView: UIView {
             self.corners[self.cornerOnTouch].scaleDown()
         default: break
         }
-        
-        self.corners[self.cornerOnTouch].setNeedsDisplay()
         self.areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: self.corners.map{ $0.center })
         for corner in self.corners {
             corner.layer.borderColor = (self.areaQuadrangle.isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor).cgColor
