@@ -82,15 +82,12 @@ public class SECropView: UIView {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
+        guard first else {
+            return
+        }
         if let imgsize = imageView?.image?.size, let imageBounds = imageView?.bounds {
             let f = AVMakeRect(aspectRatio: imgsize, insideRect: imageBounds)
             frame = f
-            areaQuadrangle.frame = bounds
-        }
-        self.update(scale: nil)
-        
-        guard first else {
-            return
         }
         first = false
         let f = bounds
