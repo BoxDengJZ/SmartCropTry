@@ -25,7 +25,11 @@ class ViewController: UIViewController {
             guard let corners = cropView.cornerLocations, let image = imageView.image else {
                 return
             }
-            let croppedImage = try SEQuadrangleHelper.cropImage(with: image, quad: corners)
+            let imgViewSize = imageView.bounds.size
+            let cn = corners.map { (pt) -> CGPoint in
+                return pt.inner(img: imgViewSize, relative: image.size)
+            }
+            let croppedImage = try SEQuadrangleHelper.cropImage(with: image, quad: cn)
             performSegue(withIdentifier: "doCrop", sender: croppedImage)
         } catch let error as SECropError {
             print(error)
@@ -42,3 +46,10 @@ class ViewController: UIViewController {
 }
 
 
+extension CGPoint{
+    func inner(img s: CGSize, relative dot: CGSize) -> CGPoint{
+        let xx = x * dot.width/s.width
+        let yy = y * dot.height/s.height
+        return CGPoint(x: xx, y: yy)
+    }
+}

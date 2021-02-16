@@ -14,7 +14,7 @@ public class SEQuadrangleHelper {
     static internal func orderPointsInQuadrangle(quad: [CGPoint]) throws -> [CGPoint] {
         func orderArrayClockwise(quad: [CGPoint]) -> [CGPoint] {
             // oriented area of quadrangle: cloclwise if it > 0
-            var square : CGFloat = 0.0
+            var square: CGFloat = 0.0
             for i in 0 ..< quad.count - 1 {
                 square += CGPoint.cross(a: CGPoint(x: quad[i].x - quad[0].x, y: quad[i].y - quad[0].y),
                                         b: CGPoint(x: quad[i + 1].x - quad[0].x, y: quad[i + 1].y - quad[0].y))
@@ -50,7 +50,7 @@ public class SEQuadrangleHelper {
         let ciImage = CIImage(image: image)
         
         let perspectiveCorrection = CIFilter(name: "CIPerspectiveCorrection")
-        let imgSize = CGSize(width: image.size.width, height: image.size.height)
+        let imgSize = image.size
         
         let orderedQuad = try orderPointsInQuadrangle(quad: quad)
         let context = CIContext(options: nil)
