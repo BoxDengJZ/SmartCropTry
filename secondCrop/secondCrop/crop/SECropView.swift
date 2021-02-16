@@ -38,9 +38,8 @@ public class SECropView: UIView {
     var path: CGMutablePath {
         let path = CGMutablePath()
         guard let firstPt = corners.first else {
-            return CGMutablePath()
+            return path
         }
-        
         let beginPt = CGPoint(x: firstPt.center.x - areaQuadrangle.frame.origin.x,
                              y: firstPt.center.y - areaQuadrangle.frame.origin.y)
         path.move(to: beginPt)
@@ -132,7 +131,7 @@ public class SECropView: UIView {
             corner.layer.borderColor = (areaQuadrangle.isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor ).cgColor
             corner.scaleDown()
         }
-        areaQuadrangle.fill(path: path)
+        pairPositionsAndViews()
     }
     
     public func configureWithCorners(on imageView: UIImageView) {
