@@ -85,7 +85,7 @@ public class SECropView: UIView {
         if let imgsize = imageView?.image?.size, let imageBounds = imageView?.bounds {
             let f = AVMakeRect(aspectRatio: imgsize, insideRect: imageBounds)
             frame = f
-            areaQuadrangle.frame = f
+            areaQuadrangle.frame = bounds
         }
         self.update(scale: nil)
         
@@ -93,16 +93,13 @@ public class SECropView: UIView {
             return
         }
         first = false
-        let f = frame
+        let f = bounds
         let first = f.origin
         let rhsTop = CGPoint(x: first.x + f.width, y: first.y)
         let lhsHip = CGPoint(x: first.x, y: first.y + f.height)
         let end = CGPoint(x: rhsTop.x, y: lhsHip.y)
         let dots = [first, rhsTop, end, lhsHip]
         self.cornerLocations = dots
-        cornerViews.enumerated().forEach { (info) in
-            info.element.frame.origin = dots[info.offset]
-        }
         areaQuadrangle.frame = bounds
         update(scale: nil)
         cornerOnTouch = nil
