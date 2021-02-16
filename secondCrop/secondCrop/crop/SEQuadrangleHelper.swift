@@ -49,9 +49,10 @@ public class SEQuadrangleHelper {
         guard let image = imageView.image else {
             throw SECropError.noImage
         }
-        let imgViewSize = imageView.bounds.size
+        let s = image.size
+        let f = AVMakeRect(aspectRatio: s, insideRect: imageView.bounds)
         let quad = corners.map { (pt) -> CGPoint in
-            return pt.inner(img: imgViewSize, relative: image.size)
+            return pt.inner(img: s, relative: f.size)
         }
         let ciImage = CIImage(image: image)
         
