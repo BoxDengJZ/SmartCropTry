@@ -104,9 +104,9 @@ public class SECropView: UIView {
     public override func layoutSubviews() {
         super.layoutSubviews()
         if let imgsize = imageView?.image?.size, let imageBounds = imageView?.bounds {
-            let imageOrigin = AVMakeRect(aspectRatio: imgsize, insideRect: imageBounds)
-            frame = imageOrigin
-            areaQuadrangle.frame = AVMakeRect(aspectRatio: imgsize, insideRect: bounds)
+            let f = AVMakeRect(aspectRatio: imgsize, insideRect: imageBounds)
+            frame = f
+            areaQuadrangle.frame = f
         }
         self.pairPositionsAndViews()
         self.update(scale: 0)
