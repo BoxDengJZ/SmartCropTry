@@ -45,8 +45,14 @@ public class SEQuadrangleHelper {
         return orderedQuad.shifted(by: orderedQuad.count - topLeftIdx)
     }
     
-    static public func cropImage(with image: UIImage, quad: [CGPoint]) throws -> UIImage {
-        
+    static public func cropImage(in imageView: UIImageView, quad corners: [CGPoint]) throws -> UIImage {
+        guard let image = imageView.image else {
+            throw SECropError.noImage
+        }
+        let imgViewSize = imageView.bounds.size
+        let quad = corners.map { (pt) -> CGPoint in
+            return pt.inner(img: imgViewSize, relative: image.size)
+        }
         let ciImage = CIImage(image: image)
         
         let perspectiveCorrection = CIFilter(name: "CIPerspectiveCorrection")
@@ -91,5 +97,16 @@ public class SEQuadrangleHelper {
             }
         }
         return positiveCount == corners.count || negativeCount == corners.count
+    }
+}
+
+
+
+
+extension CGPoint{
+    func inner(img s: CGSize, relative dot: CGSize) -> CGPoint{
+        let xx = x * dot.width/s.width
+        let yy = y * dot.height/s.height
+        return CGPoint(x: xx, y: yy)
     }
 }

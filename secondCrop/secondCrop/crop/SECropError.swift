@@ -14,4 +14,5 @@ public enum SECropError: Error {
     case nonConvexRect
     case missingImageWhileCropping
     case unknown
+    case noImage
 }
