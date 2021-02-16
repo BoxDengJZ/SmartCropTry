@@ -188,8 +188,6 @@ public class SECropView: UIView {
         let rawPt = CGPoint(x: cornerLocations[touchIdx].x + derivative.x, y: cornerLocations[touchIdx].y + derivative.y)
         let newCenterOnImage = rawPt.normalized(size: img.size)
         self.cornerLocations?[touchIdx] = newCenterOnImage
-        print(newCenterOnImage)
-        
         update(scale: nil)
     }
     
