@@ -222,9 +222,8 @@ public class SECropView: UIView {
 
         guard let cornerLocations = cornerLocations else { return }
         guard let img = imageView?.image else { return }
-        let referSize = CGSize(width: img.size.width * img.scale, height: img.size.height * img.scale)
         let rawPt = CGPoint(x: cornerLocations[touchIdx].x + derivative.x, y: cornerLocations[touchIdx].y + derivative.y)
-        let newCenterOnImage = rawPt.normalized(size: referSize)
+        let newCenterOnImage = rawPt.normalized(size: img.size)
         self.cornerLocations?[touchIdx] = newCenterOnImage
         print(newCenterOnImage)
         

@@ -50,8 +50,7 @@ public class SEQuadrangleHelper {
         let ciImage = CIImage(image: image)
         
         let perspectiveCorrection = CIFilter(name: "CIPerspectiveCorrection")
-        let imgSize = CGSize(width: image.size.width * image.scale,
-                             height: image.size.height * image.scale)
+        let imgSize = CGSize(width: image.size.width, height: image.size.height)
         
         let orderedQuad = try orderPointsInQuadrangle(quad: quad)
         let context = CIContext(options: nil)
