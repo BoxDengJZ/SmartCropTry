@@ -188,11 +188,10 @@ public class SECropView: UIView {
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         
-        guard touches.count == 1 else {
+        guard touches.count == 1, let first = touches.first else {
             return
         }
-        let point = touches.first!.location(in: self)
-        
+        let point = first.location(in: self)
         var bestDistance: CGFloat = 1000.0 * 1000.0 * 1000.0
         
         for i in 0 ..< Setting.std.cornerCount {
