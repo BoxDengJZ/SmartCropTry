@@ -10,6 +10,9 @@ Smart Crop Try, 努力仿照 “全能扫描王”
 
 ### 添加选择区域，是否 OK 的交互
 
+> 有参考 rzmn/CropView
+
+
 ![2_1](https://github.com/BoxDengJZ/SmartCropTry/blob/master/src/second.png)
 
 

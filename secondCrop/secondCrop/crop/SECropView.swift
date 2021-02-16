@@ -26,7 +26,7 @@ public class SECropView: UIView {
     var areaQuadrangle = SEAreaView()
     // 四个点
     fileprivate var cornerViews = [SECornerView]()
-    fileprivate var cornerOnTouch: Int? = nil
+    fileprivate var cornerOnTouch: Int? = -1
     fileprivate var imageView : UIImageView?
 
 	var isPathValid: Bool {
@@ -125,7 +125,8 @@ public class SECropView: UIView {
             info.element.frame.origin = dots[info.offset]
         }
         areaQuadrangle.frame = bounds
-        self.update(scale: false)
+        update(scale: nil)
+        cornerOnTouch = nil
     }
     
     public func configure(corners imageView: UIImageView) {
@@ -154,10 +155,12 @@ public class SECropView: UIView {
         for i in 0 ..< Setting.std.cornerCount {
             cornerLocations?[i] = dots[i]
         }
-        update(scale: isPathValid)
+        cornerOnTouch = -1
+        update(scale: nil)
         for i in 0 ..< Setting.std.cornerCount {
             cornerViews[i].layer.borderColor = (isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor ).cgColor
         }
+        cornerOnTouch = nil
     }
     
     fileprivate func update(scale isBigger: Bool?) {
