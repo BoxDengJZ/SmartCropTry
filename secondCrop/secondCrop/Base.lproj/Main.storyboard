@@ -70,13 +70,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="paper.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="ki3-FZ-JEQ">
-                                <rect key="frame" x="0.0" y="98" width="414" height="754"/>
+                                <rect key="frame" x="0.0" y="188" width="414" height="664"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8gV-3r-i4g"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="ki3-FZ-JEQ" firstAttribute="top" secondItem="Izd-kU-Gae" secondAttribute="bottom" constant="10" id="RUd-ne-aVD"/>
+                            <constraint firstItem="ki3-FZ-JEQ" firstAttribute="top" secondItem="Izd-kU-Gae" secondAttribute="bottom" constant="100" id="RUd-ne-aVD"/>
                             <constraint firstItem="ki3-FZ-JEQ" firstAttribute="leading" secondItem="bwF-ov-d2S" secondAttribute="leading" id="dYY-Uw-oy0"/>
                             <constraint firstAttribute="trailing" secondItem="ki3-FZ-JEQ" secondAttribute="trailing" id="lne-V2-gAi"/>
                             <constraint firstItem="NK7-wl-SRI" firstAttribute="top" secondItem="ki3-FZ-JEQ" secondAttribute="bottom" constant="10" id="pTp-In-KxT"/>
