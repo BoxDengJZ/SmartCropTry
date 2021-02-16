@@ -34,7 +34,7 @@ public class SECropView: UIView {
 	}
 
     public private(set) var cornerLocations : [CGPoint]?
-    
+    var first = true
     var path: CGMutablePath {
         let path = CGMutablePath()
         guard let firstPt = corners.first else {
@@ -111,16 +111,29 @@ public class SECropView: UIView {
         }
         self.pairPositionsAndViews()
         self.update(scale: 0)
-    }
-    
-    public func configureWithCorners(on imageView: UIImageView) {
-        let f = imageView.bounds
+        
+        guard first else {
+            return
+        }
+        first = false
+        let f = frame
         let first = f.origin
         let rhsTop = CGPoint(x: first.x + f.width, y: first.y)
         let lhsHip = CGPoint(x: first.x, y: first.y + f.height)
         let end = CGPoint(x: rhsTop.x, y: lhsHip.y)
         let corners = [first, rhsTop, end, lhsHip]
         self.cornerLocations = corners
+        areaQuadrangle.frame = bounds
+        areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: corners)
+        for corner in self.corners {
+            corner.layer.borderColor = (areaQuadrangle.isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor ).cgColor
+            corner.scaleDown()
+        }
+        areaQuadrangle.fill(path: path)
+    }
+    
+    public func configureWithCorners(on imageView: UIImageView) {
+        
         self.imageView = imageView
         self.imageView?.isUserInteractionEnabled = true
         imageView.addSubview(self)
@@ -136,16 +149,11 @@ public class SECropView: UIView {
             addSubview(corner)
             self.corners.append(corner)
         }
-        areaQuadrangle.frame = bounds
         areaQuadrangle.backgroundColor = .clear
-        areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: corners)
+        
         addSubview(areaQuadrangle)
-        for corner in self.corners {
-            corner.layer.borderColor = (areaQuadrangle.isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor ).cgColor
-            corner.scaleDown()
-        }
-        areaQuadrangle.fill(path: path)
-        layoutSubviews()
+        
+        
     }
     
     public func setCorners(newCorners: [CGPoint]) {
