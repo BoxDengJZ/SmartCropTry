@@ -13,15 +13,6 @@ class SEAreaView: UIView {
     var path: CGMutablePath?
     var isPathValid = true
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contentMode = .redraw
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        contentMode = .redraw
-    }
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
