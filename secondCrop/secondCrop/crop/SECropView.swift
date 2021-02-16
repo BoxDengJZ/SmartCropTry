@@ -233,7 +233,61 @@ public class SECropView: UIView {
         guard cornerOnTouch != nil, touches.count == 1 else {
             return
         }
-        update(scale: false)
+        
         cornerOnTouch = nil
+        sortPointClockwise()
+        pairPositionsAndViews()
+        update(scale: false)
     }
+    
+    
+    
+    
+    func sortPointClockwise(){
+         // 按左上，右上，右下，左下排序
+        var result = [CGPoint](repeating: CGPoint.zero, count: 4)
+        var minDistance: CGFloat = -1
+        guard let pts = cornerLocations else { return }
+        for p in pts{
+            let distance = p.x * p.x + p.y * p.y
+            if minDistance == -1 || distance < minDistance{
+                result[0] = p
+                minDistance = distance
+            }
+        }
+        var leftPts = pts.filter { (pp) -> Bool in
+            pp != result[0]
+        }
+        if leftPts[1].pointSideLine(left: result[0], right: leftPts[0]) * leftPts[2].pointSideLine(left: result[0], right: leftPts[0]) < 0{
+            result[2] = leftPts[0]
+        }
+        else if leftPts[0].pointSideLine(left: result[0], right: leftPts[1]) * leftPts[2].pointSideLine(left: result[0], right: leftPts[1]) < 0{
+            result[2] = leftPts[1]
+        }
+        else if leftPts[0].pointSideLine(left: result[0], right: leftPts[2]) * leftPts[1].pointSideLine(left: result[0], right: leftPts[2]) < 0{
+            result[2] = leftPts[2]
+        }
+        leftPts = pts.filter { (pt) -> Bool in
+            pt != result[0] && pt != result[2]
+        }
+        if leftPts[0].pointSideLine(left: result[0], right: result[2]) > 0{
+            result[1] = leftPts[0]
+            result[3] = leftPts[1]
+        }
+        else{
+            result[1] = leftPts[1]
+            result[3] = leftPts[0]
+        }
+        cornerLocations = result
+    }
+}
+
+
+
+extension CGPoint{
+    
+    func pointSideLine(left lhs: CGPoint, right rhs: CGPoint) -> CGFloat{
+        return (x - lhs.x) * (rhs.y - lhs.y) - (y - lhs.y) * (rhs.x - lhs.x)
+    }
+
 }
