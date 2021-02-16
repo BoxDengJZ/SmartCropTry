@@ -134,7 +134,7 @@ public class SECropView: UIView {
         pairPositionsAndViews()
     }
     
-    public func configureWithCorners(on imageView: UIImageView) {
+    public func configure(corners imageView: UIImageView) {
         
         self.imageView = imageView
         self.imageView?.isUserInteractionEnabled = true
@@ -155,10 +155,11 @@ public class SECropView: UIView {
         addSubview(areaQuadrangle)
     }
     
-    public func setCorners(newCorners: [CGPoint]) {
-		areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: newCorners)
+    public
+    func refresh(corners dots: [CGPoint]) {
+		areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: dots)
         for i in 0 ..< Setting.std.cornerCount {
-            cornerLocations?[i] = newCorners[i]
+            cornerLocations?[i] = dots[i]
 			corners[i].layer.borderColor = (areaQuadrangle.isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor ).cgColor
         }
         pairPositionsAndViews()
