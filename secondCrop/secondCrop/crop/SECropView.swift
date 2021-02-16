@@ -29,8 +29,8 @@ public class SECropView: UIView {
     fileprivate var cornerOnTouch: Int? = nil
     fileprivate var imageView : UIImageView?
 
-	var isPathvalid: Bool {
-		areaQuadrangle.isPathValid
+	var isPathValid: Bool {
+        SEQuadrangleHelper.checkConvex(corners: cornerViews.map{ $0.center })
 	}
 
     public private(set) var cornerLocations : [CGPoint]?
@@ -126,12 +126,12 @@ public class SECropView: UIView {
             info.element.frame.origin = dots[info.offset]
         }
         areaQuadrangle.frame = bounds
-        areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: dots)
+        pairPositionsAndViews()
         for corner in self.cornerViews {
-            corner.layer.borderColor = (areaQuadrangle.isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor ).cgColor
+            corner.layer.borderColor = (isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor ).cgColor
             corner.scaleDown()
         }
-        pairPositionsAndViews()
+        
     }
     
     public func configure(corners imageView: UIImageView) {
@@ -157,12 +157,13 @@ public class SECropView: UIView {
     
     public
     func refresh(corners dots: [CGPoint]) {
-		areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: dots)
         for i in 0 ..< Setting.std.cornerCount {
             cornerLocations?[i] = dots[i]
-			cornerViews[i].layer.borderColor = (areaQuadrangle.isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor ).cgColor
         }
         pairPositionsAndViews()
+        for i in 0 ..< Setting.std.cornerCount {
+            cornerViews[i].layer.borderColor = (isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor ).cgColor
+        }
     }
     
     fileprivate func update(scale isBigger: Bool?) {
@@ -177,10 +178,8 @@ public class SECropView: UIView {
                 cornerViews[touchIdx].scaleDown()
             }
         }
-        
-        self.areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: cornerViews.map{ $0.center })
         for corner in cornerViews {
-            corner.layer.borderColor = (self.areaQuadrangle.isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor).cgColor
+            corner.layer.borderColor = (isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor).cgColor
         }
     }
 
