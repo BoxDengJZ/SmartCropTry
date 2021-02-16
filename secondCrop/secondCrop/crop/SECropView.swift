@@ -277,7 +277,10 @@ public class SECropView: UIView {
             result[1] = leftPts[1]
             result[3] = leftPts[0]
         }
-        cornerLocations = result
+        if result[0].gimpTransformPolygon(isConvex: result[1], two: result[3], three: result[2]){
+            cornerLocations = result
+        }
+        
     }
 }
 
@@ -289,4 +292,18 @@ extension CGPoint{
         return (x - lhs.x) * (rhs.y - lhs.y) - (y - lhs.y) * (rhs.x - lhs.x)
     }
 
+    
+    func gimpTransformPolygon(isConvex firstPt: CGPoint, two twicePt: CGPoint, three thirdPt: CGPoint) -> Bool{
+        
+        let x2 = firstPt.x, y2 = firstPt.y
+        let x3 = twicePt.x, y3 = twicePt.y
+        let x4 = thirdPt.x, y4 = thirdPt.y
+     
+        let z1 = ((x2 - x) * (y4 - y) - (x4 - x) * (y2 - y))
+        let z2 = ((x4 - x) * (y3 - y) - (x3 - x) * (y4 - y))
+        let z3 = ((x4 - x2) * (y3 - y2) - (x3 - x2) * (y4 - y2))
+        let z4 = ((x3 - x2) * (y - y2) - (x - x2) * (y3 - y2))
+     
+        return (z1 * z2 > 0) && (z3 * z4 > 0)
+    }
 }
