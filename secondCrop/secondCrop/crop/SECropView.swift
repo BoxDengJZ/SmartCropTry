@@ -121,10 +121,13 @@ public class SECropView: UIView {
         let rhsTop = CGPoint(x: first.x + f.width, y: first.y)
         let lhsHip = CGPoint(x: first.x, y: first.y + f.height)
         let end = CGPoint(x: rhsTop.x, y: lhsHip.y)
-        let corners = [first, rhsTop, end, lhsHip]
-        self.cornerLocations = corners
+        let dots = [first, rhsTop, end, lhsHip]
+        self.cornerLocations = dots
+        corners.enumerated().forEach { (info) in
+            info.element.frame.origin = dots[info.offset]
+        }
         areaQuadrangle.frame = bounds
-        areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: corners)
+        areaQuadrangle.isPathValid = SEQuadrangleHelper.checkConvex(corners: dots)
         for corner in self.corners {
             corner.layer.borderColor = (areaQuadrangle.isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor ).cgColor
             corner.scaleDown()
@@ -147,13 +150,10 @@ public class SECropView: UIView {
         for _ in 0..<Setting.std.cornerCount {
             let corner = SECornerView(frame: CGRect(x: 0, y: 0, width: Setting.std.cornerSize, height: Setting.std.cornerSize))
             addSubview(corner)
-            self.corners.append(corner)
+            corners.append(corner)
         }
         areaQuadrangle.backgroundColor = .clear
-        
         addSubview(areaQuadrangle)
-        
-        
     }
     
     public func setCorners(newCorners: [CGPoint]) {
