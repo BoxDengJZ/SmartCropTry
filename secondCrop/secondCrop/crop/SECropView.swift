@@ -230,7 +230,6 @@ public class SECropView: UIView {
         print(newCenterOnImage)
         
         pairPositionsAndViews()
-        areaQuadrangle.fill(path: path)
     }
     
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
