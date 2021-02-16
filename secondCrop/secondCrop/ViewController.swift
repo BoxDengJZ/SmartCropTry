@@ -34,7 +34,7 @@ class ViewController: UIViewController {
         } catch let error as SECropError {
             print(error)
         } catch {
-            print("Something went wrong, are you feeling OK?")
+            print(error)
         }
     }
     
