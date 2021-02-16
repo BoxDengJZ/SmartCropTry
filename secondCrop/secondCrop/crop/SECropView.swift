@@ -60,8 +60,8 @@ public class SECropView: UIView {
         guard let cornersOnImage = cornerLocations else { return nil }
         
         let imageOrigin = AVMakeRect(aspectRatio: imageSize, insideRect: imageViewFrame).origin
-        let shiftX = -cropViewOrigin.x + imageViewOrigin.x + imageOrigin.x + Setting.std.cornerSize / 2.0
-        let shiftY = -cropViewOrigin.y + imageViewOrigin.y + imageOrigin.y + Setting.std.cornerSize / 2.0
+        let shiftX = -cropViewOrigin.x + imageViewOrigin.x + imageOrigin.x
+        let shiftY = -cropViewOrigin.y + imageViewOrigin.y + imageOrigin.y
         let shift = CGPoint(x: shiftX, y: shiftY)
         
         let pts = cornersOnImage.map {
@@ -94,8 +94,7 @@ public class SECropView: UIView {
     fileprivate func pairPositionsAndViews() {
         if let cornerPositions = self.cornersLocationOnView {
             for i in 0 ..< Setting.std.cornerCount {
-                self.cornerViews[i].center = CGPoint(x: cornerPositions[i].x - Setting.std.cornerSize / 2.0,
-                                            y: cornerPositions[i].y - Setting.std.cornerSize / 2.0)
+                self.cornerViews[i].center = CGPoint(x: cornerPositions[i].x, y: cornerPositions[i].y)
             }
         }
         self.areaQuadrangle.fill(path: path)
