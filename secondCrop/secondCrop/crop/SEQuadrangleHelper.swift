@@ -49,15 +49,14 @@ public class SEQuadrangleHelper {
         guard let image = imageView.image else {
             throw SECropError.noImage
         }
-        let s = image.size
-        let f = AVMakeRect(aspectRatio: s, insideRect: imageView.bounds)
+        let imgSize = image.size
+        let f = AVMakeRect(aspectRatio: imgSize, insideRect: imageView.bounds)
         let quad = corners.map { (pt) -> CGPoint in
-            return pt.inner(img: s, relative: f.size)
+            return pt.inner(img: imgSize, relative: f.size)
         }
         let ciImage = CIImage(image: image)
         
         let perspectiveCorrection = CIFilter(name: "CIPerspectiveCorrection")
-        let imgSize = image.size
         
         let orderedQuad = try orderPointsInQuadrangle(quad: quad)
         let context = CIContext(options: nil)
