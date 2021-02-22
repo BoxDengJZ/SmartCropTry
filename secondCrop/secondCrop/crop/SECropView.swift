@@ -136,11 +136,15 @@ public class SECropView: UIView {
         cornerOnTouch = nil
     }
     
-    fileprivate func update(scale isBigger: Bool?) {
+    fileprivate
+    func update(scale isBigger: Bool?){
+        pairPositionsAndViews()
+        for corner in cornerViews {
+            corner.layer.borderColor = (isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor).cgColor
+        }
         guard let touchIdx = cornerOnTouch else {
             return
         }
-        pairPositionsAndViews()
         if let bigger = isBigger{
             switch bigger {
             case true:
@@ -148,9 +152,6 @@ public class SECropView: UIView {
             case false:
                 cornerViews[touchIdx].scaleDown()
             }
-        }
-        for corner in cornerViews {
-            corner.layer.borderColor = (isPathValid ? Setting.std.goodAreaColor : Setting.std.badAreaColor).cgColor
         }
     }
 
