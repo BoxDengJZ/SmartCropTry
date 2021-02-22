@@ -106,8 +106,8 @@ public class SEQuadrangleHelper {
 
 extension CGPoint{
     func inner(img s: CGSize, relative dot: CGSize) -> CGPoint{
-        let xx = x * dot.width/s.width
-        let yy = y * dot.height/s.height
+        let xx = x * s.width/dot.width
+        let yy = y * s.height/dot.height
         return CGPoint(x: xx, y: yy)
     }
 }
