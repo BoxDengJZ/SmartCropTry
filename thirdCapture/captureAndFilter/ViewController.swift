@@ -13,13 +13,16 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        
+    }
+
+    @IBAction func open(_ sender: Any) {
+   
         let camera = CusCamera()
         camera.takeDoneBlockX = { (info) in
             print(info)
         }
         showDetailViewController(camera, sender: nil)
     }
-
-
 }
 
