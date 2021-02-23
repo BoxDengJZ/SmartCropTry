@@ -142,7 +142,7 @@ public class SECropView: UIView {
         guard let touchIdx = cornerOnTouch else {
             return
         }
-        if let bigger = isBigger{
+        if cornerViews.count == 4, let bigger = isBigger{
             switch bigger {
             case true:
                 cornerViews[touchIdx].scaleUp()
