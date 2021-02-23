@@ -235,6 +235,14 @@ class CusCamera: UIViewController, CAAnimationDelegate {
         buttomFinalView.frame = buttomArea
     }
     
+    
+    func resetResultImageFrame(){
+        cropView.refresh(frame: areaInner)
+        cropView.isHidden = true
+        takedImageView.frame = areaInner
+    }
+    
+    
     func setupUI() {
         view.backgroundColor = .black
         view.layer.debug()
@@ -406,7 +414,7 @@ class CusCamera: UIViewController, CAAnimationDelegate {
         session.startRunning()
         resetSubViewStatus()
         takedImage = nil
-        
+        resetResultImageFrame()
     }
     
 

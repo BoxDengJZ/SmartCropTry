@@ -58,6 +58,7 @@ public class SECropView: UIView {
         super.init(frame: frame)
         backgroundColor = UIColor.clear
         clipsToBounds = true
+        isHidden = true
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -104,6 +105,7 @@ public class SECropView: UIView {
     
     
     public func configure(corners imageView: UIImageView) {
+        isHidden = false
         first = true
         cornerViews.removeAll()
         for subview in subviews {
